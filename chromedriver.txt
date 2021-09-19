@@ -1,2 +1,0 @@
-System.setProperty("webdriver.chrome.driver","c:\\location\\chromedriver.exe")
-base.Driver = new ChromeDriver();
