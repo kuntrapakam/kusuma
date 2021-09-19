@@ -1,0 +1,39 @@
+Amazon Linux
+Amazon Linux 2:
+
+Install the EPEL release package for RHEL 7 and enable the EPEL repository.
+
+sudo amazon-linux-extras install epel -y
+Amazon Linux Amazon Machine Image (AMI):
+
+The EPEL repository is already installed on the original version of Amazon Linux, but you must enable it. You can enable this repository either by using the yum-config-manager command or by editing the epel.repo file.
+
+sudo yum-config-manager --enable epel
+RHEL
+RHEL 8:
+
+Install the EPEL release package for RHEL 8. Enable both the EPEL and CodeReady Builder repositories. The CodeReady Builder repository contains development tools required by many EPEL packages.
+
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+sudo dnf config-manager --set-enabled codeready-builder-for-rhel-8-rhui-rpms
+RHEL 7:
+
+Install and enable the EPEL release package for RHEL 7.
+
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+CentOS
+CentOS 8:
+
+Install the EPEL release package for RHEL 8. Enable both the EPEL and PowerTools repositories. The PowerTools repository contains development tools required by many EPEL packages.
+
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+sudo dnf config-manager --set-enabled PowerTools
+CentOS 7:
+
+Install and enable the EPEL release package. CentOS 7 includes the epel-release package in the base repositories.
+
+sudo yum -y install epel-release
+List enabled repositories
+To verify that the EPEL repository is enabled, run the repolist command.
+
+sudo yum repolist
