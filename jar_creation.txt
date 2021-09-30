@@ -1,0 +1,6 @@
+C:\Java> jar cf myFile.jar *.class
+C:\Java> jar cmf myManifestFile myFile.jar *.class
+C:\Java> jar cfm myFile.jar myManifestFile *.class
+C:\Java> jar xf myFile.jar
+C:\Java> jar xf myFile.jar foo bar
+C:\Java> jar i main.jar

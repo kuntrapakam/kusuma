@@ -1,0 +1,33 @@
+[apache]
+ip ansible_user=             ansible_ssh_private_key_file=~/file.pem
+
+ansible-galaxy collection install amazon.aws
+
+aws_ec2.yml
+(which is an dynamic inventory for auto scaling)
+
+dependencies
+boto3
+botocore
+{home_location}
+install pip package manager in the instance
+python 3.6 is the stable one.
+pip install boto3 and botocore
+
+
+vi aws_ec2.yml
+
+examples
+
+plugin: aws_ec2
+regions:
+  - ap-south-1
+
+ansible-inventory -i aws_ec2.yml --list
+
+1.IAM role attach to this instance
+2.create IAM user get access key and secret key
+
+craete ec2.pem
+
+ansible localhost -i inventory -m ping --private-key=ec2.pem

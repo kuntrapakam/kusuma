@@ -1,0 +1,48 @@
+cloudwatch------------------iamrole---------------grafana
+iam ploicy
+{
+"Version": "2012-10-17",
+"Statement": [
+   {
+     "Sid": "AllowReadingMetricsFromCloudWatch",
+     "Effect": "Allow",
+     "Action": [
+        "cloudwatch:DescribeAlarmsForMetric",
+        "cloudwatch:DescribeAlarmHistory",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:ListMetrics",
+        "cloudwatch:GetMetricStatistics",
+        "cloudwatch:GetMetricData"
+     ],
+     "Resource": "*" 
+   },
+   { "Sid": "AllowReadingTagsInstancesRegionsFromEC2",
+     "Effect": "Allow", 
+     "Action": ["ec2:DescribeTags", "ec2:DescribeInstances", "ec2:DescribeRegions"],
+     "Resource": "*"
+   }
+ ]
+}
+create a role and attach this role to the ec2 instance,
+along with the role which is having the iam role
+open 
+iam role
+then
+copy the arn and edit trust relationship then
+"AWS":"paste it here"
+then in the instance
+mkdir
+.aws
+cd .aws
+create credentials
+then keep aws_access_key
+and aws_secret_key
+region
+chmod 600 credentials
+
+cloud watch keep assume role
+and region
+then select sdk as default
+139
+as a import 
+11704 for node_exporter

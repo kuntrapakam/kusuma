@@ -1,0 +1,57 @@
+    Real world mapping of resources.
+    Track metadata of resources such as IP address of EC2 instance, its dependency with respect to other resources etc.
+    Cache resource attributes.
+    Enables collaboration among teams.
+
+    Safer storage: Storing state on the remote server helps prevent sensitive information. State file remains same but remote storage like S3 provides a layer to security like making S3 bucket private and giving limited access.
+    Auditing: Invalid access can be identified by enabling logging.
+    Share data: Remote storage helps share state file with other members 
+of team.
+
+
+
+resource "aws_s3_bucket" "bucket" {
+  bucket = "terraformbackend"
+}
+
+provider "aws" {
+  access_key = "ACCESS_KEY_HERE"
+  secret_key = "SECRET_KEY_HERE"
+  region     = "us-east-2"
+}
+
+
+
+provider "aws" {
+  access_key = "ACCESS_KEY_HERE"
+  secret_key = "SECRET_KEY_HERE"
+  region     = "us-east-2"
+}
+
+terraform {
+  backend "s3" {
+    bucket = "terraformbackend"
+    key = "terraform"
+    region = "us-east-2"
+  }
+}
+
+
+resource "aws_dynamodb_table" "terraform_state_lock" {
+  name           = "terraform-lock"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "LockID"attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
+
+terraform {
+  backend "s3" {
+    bucket = "terraformbackend"
+    key = "terraform"
+    region = "us-east-2"
+    dynamodb_table = "terraform-lock"
+  }
+}

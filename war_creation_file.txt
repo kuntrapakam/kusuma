@@ -1,0 +1,357 @@
+Tutorial - Very Simple HelloWorld Web Application
+This tutorial is for beginning programmers who want to know the minimal basic information on how to create servlets and JSPs, package them into a deployable WAR file, deploy the application to a tc Runtime instance, and run the application in a browser. The tutorial uses Ant as its build framework. You can also use an IDE, such as Spring Tool Suite, to create the application. The tutorial shows you how to create each artifact, from the servlet source to the Ant build.xml file, from scratch.
+
+Before You Begin
+Install Pivotal tc Server and Ant. See Installing tc Server and Apache Ant Project.
+
+Creating and Deploying the HelloWorld Web Application
+To create a Web application and deploy it to a tc Runtime instance:
+
+When you install Ant, add or update the following environment variables:
+
+ANT_HOME: Set this variable to the location where you installed Ant, such as /usr/local/ant/apache-ant-1.8.2.
+PATH: Update your PATH variable to include ANT_HOME/bin.
+Set the JAVA_HOME environment variable to the directory where the JDK is installed.
+
+Create a project directory structure to contain the HelloWorld Web application source files.
+
+Create the top-level directory called helloworld. You can create the helloworld directory in any location on your computer that you have permission to update. The helloworld directory will contain the Ant build file (build.xml).
+
+Create two sub-directories of the helloworld directory: src to contain the Java source file for the HelloWorld servlet and web that will contain the JSP file, static HTML file, images, and deployment descriptor.
+
+In the src directory, create an examples sub-directory. This directory corresponds to the package that contains the HelloWorld servlet.
+
+In the web directory, create two subdirectories: images, which will contain any images used by the Web application, and WEB-INF, which is a standard directory that contains the Web application deployment descriptor files.
+
+The following graphic describes the project directory hierarchy:
+
+meDirectory Hierarchy of the HelloWorld Application
+
+
+
+Create the Hello.java servlet Java source file and put it in the helloworld/src/examples directory.
+
+For sample Java code that you can copy and paste into your own Java file and a brief explanation of how to program a simple servlet, see Hello.java.
+
+Create the hello.jsp JSP file and put it in the helloworld/web directory.
+
+For sample JSP code that you can copy and paste into your own JSP file and a brief explanation of how to program a simple JSP, see hello.jsp.
+
+Create the web.xml Web application deployment descriptor and put it in the helloworld/web/WEB-INF directory.
+
+For sample XML that you can copy and paste into your own web.xml file and a brief explanation of the elements, see web.xml.
+
+Create a default index.html page and put it in the helloworld/web directory.
+
+Create the Ant build file (build.xml) that includes targets for compiling and packaging the Web application and put it in the helloworld directory.
+
+For a sample Ant build file that you can copy and paste into your own file, see Ant Build File to Compile and Package the Example.
+
+In your own build file, update the tcserver.home property to fit your environment; it should point to the CATALINA_HOME of your tc Runtime installation. For example, if you installed tc Server Standard Edition in the /opt/pivotal directory, set the tcserver.home property in the build.xml file to something like the following:
+
+<property name="tcserver.home" value="/opt/pivotal/pivotal-tc-server-standard-3.0.2.RELEASE/tomcat-7.0.50.A.RELEASE" /> 
+Right-click the following image and save it with name Pivotal_Logo.png to the helloworld/web/images directory.
+
+
+
+When you finish creating all the artifacts that make up the HelloWorld Web application, your directory structure and contents should look like the following:
+
+helloworld
+helloworld/build.xml
+helloworld/src
+helloworld/src/examples
+helloworld/src/examples/Hello.java
+helloworld/web
+helloworld/web/hello.jsp
+helloworld/web/images
+helloworld/web/images/Pivotal_Logo.png
+helloworld/web/index.html
+helloworld/web/WEB-INF
+helloworld/web/WEB-INF/web.xml  
+Compile and package the HelloWorld Web application by opening a command window, changing to the helloworld directory, and executing the following command:
+
+prompt> ant all 
+This ant command creates a deployable WAR file of the HelloWorld application called hello.war in the helloworld/dist directory. You will see the following output from the ant command if it completes successfully:
+
+Buildfile: build.xml
+
+clean:
+
+prepare:
+    [mkdir] Created dir: /home/samples/helloworld/dist
+    [mkdir] Created dir: /home/samples/helloworld/work/WEB-INF/classes
+     [copy] Copying 4 files to /home/samples/helloworld/work
+
+compile:
+    [javac] Compiling 1 source file to /home/samples/helloworld/work/WEB-INF/classes
+
+dist:
+      [jar] Building jar: /home/samples/helloworld/dist/hello.war
+
+all:
+
+BUILD SUCCESSFUL
+Total time: 2 seconds
+Start a tc Runtime instance. See Starting and Stopping tc Runtime Instances.
+
+Deploy the Web application JAR file to the tc Runtime instance. See Deploying Applications to tc Runtime Instances.
+
+Invoke the HelloWorld Web application in your browser:
+
+http://host:port/hello
+where:
+
+host is the name of the computer that is hosting the tc Runtime instance. If it is the same as the computer hosting your browser, you can use localhost.
+port is the port to which the tc Runtime instance listens. The default value is 8080.
+In the example, /hello is the default URL context of the Web application, which in this example is the name of the WAR package without the trailing .war file extension.
+
+For example:
+
+http://localhost:8080/hello 
+Java Source of the Hello.java Servlet
+The following Java source file shows the code for the Hello.java servlet; see Description of the Hello Servlet for information about the relevant parts of the code sample.
+
+package examples;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+/**
+ * Simple Hello servlet.
+ */
+
+public final class Hello extends HttpServlet {
+
+
+    /**
+     * Respond to a GET request for the content produced by
+     * this servlet.
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are producing
+     *
+     * @exception IOException if an input/output error occurs
+     * @exception ServletException if a servlet error occurs
+     */
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response)
+      throws IOException, ServletException {
+
+        response.setContentType("text/html");
+        PrintWriter writer = response.getWriter();        
+        writer.println("<html>");
+        writer.println("<head>");
+        writer.println("<title>Sample Application Servlet Page</title>");
+        writer.println("</head>");
+        writer.println("<body bgcolor=white>");
+
+        writer.println("<table border=\"0\" cellpadding=\"10\">");
+        writer.println("<tr>");
+        writer.println("<td>");
+        writer.println("<img src=\"images/Pivotal_Logo.png\">");
+        writer.println("</td>");
+        writer.println("<td>");
+        writer.println("<h1>Sample Application Servlet</h1>");
+        writer.println("</td>");
+        writer.println("</tr>");
+        writer.println("</table>");
+
+        writer.println("This is the output of a servlet that is part of");
+        writer.println("the Hello, World application.");
+
+        writer.println("</body>");
+        writer.println("</html>");
+    }
+} 
+Description of the Hello Servlet
+In the preceding code:
+
+The Hello class extends the javax.servlet.http.HttpServlet abstract class. This abstract class provides a framework for handling the HTTP protocol. When extending the HttpServlet abstract class, a programmer must override at least one method, depending on the type of requests the servlet supports, such as HTTP GET, HTTP POST, and so on.
+The Hello servlet overrides the doGet method because it supports HTTP GET. The parameters of the method are the HTTP request and response.
+The response.setContentType method tells the receiver of the response (such as a browser) that the response type is text/html, or simple HTML.
+The response.getWriter method returns a PrintWriter object used to send character text to the client, in this case a browser. The writer.println lines build an HTML file that will be rendered by the browser that invokes the servlet.
+For complete documentation about the Java Servlet technology, including API reference documentation, specifications, and tutorials, see Java Servlet Technology.
+
+JSP Source for the hello.jsp JSP
+The following source shows the JSP code for the hello.jsp. See description of the hello.jsp for additional information.
+
+  <html>
+  <head>
+    <title>Sample Application JSP Page</title>
+  </head>
+
+  <body bgcolor=white>
+
+  <table border="0" cellpadding="10">
+    <tr>
+      <td align=center>
+        <img src="images/Pivotal_Logo.png">
+      </td>
+      <td>
+         <h1>Sample Application JSP Page</h1>
+      </td>
+    </tr>
+  </table>
+
+  <br />
+  <p>This is the output of a JSP page that is part of the HelloWorld application.</p>
+
+  <%= new String("Hello!") %>
+
+  </body>
+</html> 
+Description of the hello.jsp
+The hello.jsp page is a static HTML page embedded with a JSP command. A JSP command is an XML-like snippet that encapsulates logic that dynamically generates content within the static HTML. JSP commands can include directives, declarations, expressions, actions, and blocks of Java code, all enclosed within angle-brackets, like XML elements. At compile-time, the JSP is converted into a servlet, which is what tc Runtime instance actually executes at runtime.
+
+The hello.jsp includes the following simple JSP directive:
+
+<%= new String("Hello!") %>
+This JSP directive simply prints out a message to the client (browser): Hello!
+
+For complete documentation about JSPs, including specifications, FAQs, and tutorials, see JavaServer Pages Technology.
+
+Sample web.xml File
+The following sample web.xml deployment descriptor shows how to declare the HelloServlet servlet in the HelloWorld Web application. See also Description of the web.xml File.
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <display-name>HelloWorld Application</display-name>
+    <description>
+        This is a simple web application with a source code organization
+        based on the recommendations of the Application Developer's Guide.
+    </description>
+
+    <servlet>
+        <servlet-name>HelloServlet</servlet-name>
+        <servlet-class>examples.Hello</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HelloServlet</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+
+</web-app>     
+Description of the web.xml File
+In the preceding web.xml deployment descriptor file, the <servlet> XML element declares the HelloServlet, the examples.Hello Java class implements the servlet, and the <servlet-mapping> XML element specifies the /helloURL pattern that invokes the servlet in a browser. This URL pattern is used in the index.html file.
+
+Sample Default index.html File
+The following sample index.html file is the default HTML file that appears in a browser when a user invokes the HelloWorld Web application. The index.html file in turn invokes both the hello.jsp JSP and HelloServlet servlet.
+
+The index.html file invokes the JSP by linking to its name (hello.jsp). The HTML file invokes the servlet by linking to its URL pattern (/hello).
+
+<html>
+  <head>
+    <title>Sample "Hello, World" Application</title>
+  </head>
+  <body bgcolor=white>
+
+    <table border="0" cellpadding="10">
+      <tr>
+        <td>
+          <img src="images/Pivotal_Logo.png">
+        </td>
+        <td>
+          <h1>Sample "Hello, World" Application</h1>
+        </td>
+      </tr>
+    </table>
+
+    <p>This is the home page for the HelloWorld Web application. </p>
+    <p>To prove that they work, you can execute either of the following links:
+    <ul>
+      <li>To a JSP page: <a href="hello.jsp">hello.jsp</a>.
+      <li>To a servlet: <a href="/hello">hello</a>.
+    </ul>
+
+  </body>
+</html>
+Ant Build File to Compile and Package the Example
+The following sample Ant build.xml file compiles the servlet code and packages all the Web application artifacts into a deployable WAR file; see Description of the build.xml File for additional information.
+
+<project name="My Project" default="help" basedir=".">
+  <!-- Define the properties used by the build -->
+  <property name="app.name"      value="hello"/>
+  <property name="tcserver.home" value="/opt/pivotal/pivotal-tc-server-standard-3.0.2.RELEASE/tomcat-7.0.50.A.RELEASE" />
+  <property name="work.home"    value="${basedir}/work"/>
+  <property name="dist.home"     value="${basedir}/dist"/>
+  <property name="src.home"      value="${basedir}/src"/>
+  <property name="web.home"      value="${basedir}/web"/>
+
+  <target name="help">
+    <echo>You can use the following targets:</echo>
+    <echo> </echo>
+    <echo>  help    : (default) Prints this message </echo>
+    <echo>  all     : Cleans, compiles, and packages application</echo>
+    <echo>  clean   : Deletes work directories</echo>
+    <echo>  compile : Compiles servlets into class files</echo>
+    <echo>  dist    : Packages artifacts into a deployable WAR</echo>
+    <echo></echo>
+    <echo>For example, to clean, compile, and package all at once, run:</echo>
+    <echo>prompt> ant all </echo>
+  </target>
+
+  <!-- Define the CLASSPATH -->
+  <path id="compile.classpath">
+    <fileset dir="${tcserver.home}/bin">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement location="${tcserver.home}/lib"/>
+    <fileset dir="${tcserver.home}/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="all" depends="clean,compile,dist"
+          description="Clean work dirs, then compile and create a WAR"/>
+
+  <target name="clean"
+          description="Delete old work and dist directories">
+    <delete dir="${work.home}"/>
+    <delete dir="${dist.home}"/>
+  </target>
+
+  <target name="prepare" depends="clean"
+          description="Create working dirs and copy static files to work dir">
+    <mkdir  dir="${dist.home}"/>
+    <mkdir  dir="${work.home}/WEB-INF/classes"/>
+    <!-- Copy static HTML and JSP files to work dir -->
+    <copy todir="${work.home}">
+      <fileset dir="${web.home}"/>
+    </copy>
+  </target>
+
+  <target name="compile" depends="prepare"
+          description="Compile Java sources and copy to WEB-INF/classes dir">
+    <javac srcdir="${src.home}"
+          destdir="${work.home}/WEB-INF/classes">
+        <classpath refid="compile.classpath"/>
+    </javac>
+    <copy  todir="${work.home}/WEB-INF/classes">
+      <fileset dir="${src.home}" excludes="**/*.java"/>
+    </copy>
+
+  </target>
+
+
+  <target name="dist" depends="compile"
+          description="Create WAR file for binary distribution">
+    <jar jarfile="${dist.home}/${app.name}.war"
+         basedir="${work.home}"/>
+  </target>
+
+</project> 
+Description of the build.xml File
+The Ant build.xml file defines targets for compiling and packaging the HelloWorld Web application. In preparation, the build process first creates an output directory and creates the required directory hierarchy below it for a standard Web application. This includes the WEB-INF directory that will contain the web.xml file. The build process also sets the build’s CLASSPATH value to include the required JAR files in the tc Server distribution.
+
+The compile target uses the Java compiler to compile the Java servlet file into a class and copies it to the output directory. The package target creates a JAR file of the output directory.

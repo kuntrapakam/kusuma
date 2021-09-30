@@ -1,0 +1,45 @@
+install grafana
+node exporter
+prometheus
+then
+policy iam
+{
+"Version": "2012-10-17",
+"Statement": [
+   {
+     "Sid": "AllowReadingMetricsFromCloudWatch",
+     "Effect": "Allow",
+     "Action": [
+        "cloudwatch:DescribeAlarmsForMetric",
+        "cloudwatch:DescribeAlarmHistory",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:ListMetrics",
+        "cloudwatch:GetMetricStatistics",
+        "cloudwatch:GetMetricData"
+     ],
+     "Resource": "*" 
+   },
+   { "Sid": "AllowReadingTagsInstancesRegionsFromEC2",
+     "Effect": "Allow", 
+     "Action": ["ec2:DescribeTags", "ec2:DescribeInstances", "ec2:DescribeRegions"],
+     "Resource": "*"
+   }
+ ]
+}
+create iam role
+then edit trust relationship
+paste aws arn
+
+attach the role to the ec2 instance
+then 
+
+mkdir .aws
+touch credentials
+
+[default]
+aws_access_key_id = ACCESS_KEY_ID
+aws_secret_access_key = SECRET_ACCESS_KEY
+region = AWS_REGION
+chmod 600 credentials
+
+cloud watch ...

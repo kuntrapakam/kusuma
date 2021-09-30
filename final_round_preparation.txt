@@ -1,0 +1,84 @@
+hi, good evening, my name is rohith and iam from tirupathi,i have been working as a build and release engineer and on several(multiple) aws services,
+coming to my roles and responsibilities my first most priority is to check whether the ci-cd pipelines are intact or not, if not have to deal with the issues 
+by collaborating with the other team members,(compatibility issues, unnecessary updates of plugins, mis configurations)
+and have to work on the task which is assigned to that particular day.
+for the continous integration and continuous deployemnet we are using jenkins as a cicd tool,
+and for the source code management we are using github, and git as a tool
+then using maven which is a build tool for java based projects,
+which is having several goals ,
+by using these goals we can able to get the package in the form of jar,war,ear 
+it's having goals like validate,compile,unit,integration-test,clean,package,install,verify
+we can able to do these in the local also before doing in the cicd pipeline if it's necessary,
+we can get the required package.
+we are using sonarqube for the code quality analysis,
+it's a static code analysis, which is having 80%of coverage quality gate by default,(code coverage,bugs,code smells,vulnerabilities)
+when ever the code meets this mentioned coverage in the quality gate only with the help of maven the package will be built.
+then the build package will be tested using the plugin which is an junit, it stores the results in the .xml file
+then the package will be deployed to the dev environment web server which is an apache tomcat, and it will be stored in to the artifactory,
+in my case it is a nexus,
+we have to configure these by using the pluings which were avilable in the jenkins plugins store,
+we have to configure these in the global configuration tool,
+we will give webhook to continuously monitor the github repository, when ever any changes occur in the repo it will automatically pull and try to build by using the pipeline.
+in same case we will give webhook to the sonarqube as well it will also fetch the code quality analysis results from jenkins pipeline.
+we have to configure these by using different avilable pluings, jenkins is having vast range of plugins a plugin is nothing but a suite of software which is used to run ppipelines
+seamlessly and smoothly.
+then we will configure the nexus group id ,package,artifact id and details which were avilable in the pom.xml 
+which is a project object module. which contains each details about the project
+nexus platform and sonarqube scanner plugins.
+and deploying it into apache tomcat web server.
+then creating docker files and by using docker build -t .
+can able to build or can be able to pull the image from docker hub registry.
+then we can run the container from the docker image,
+by using docker run -itd --name docker container name -p 8090:8080 -v hostpath:containerpath dockerimage name
+by using docker exec -it dockercontainername /bin/bash
+we can able to login to the docker container
+by default its in the bridge network.
+we can create our own network in the docker
+docker network create --driver=bridge --subnet=range --gateway=ip nameofthenetwork
+if two docker containers need to interact between them they need to be in same network then they can be able to communicate.
+for this we have to  use
+docker network connect containername networkname
+one container can have multiple ips yes possible.
+docker inspect containername
+which will give you the complete details of the docker container.
+FROM maven3.6.3-openjdk AS maven
+COPY
+ADD
+RUN
+CMD
+ENTRYPOINT
+WORKDIR
+chmod 
+chown
+wget
+tar -ivh -xvf latest.tar.gz
+ENV
+--env-file
+--env
+and on several aws services,
+which are provisioning ec2-instances like rhel,centos and ubuntu
+creating security groups for handling traffic
+creating vpc which is an isolated area where we used to provision our aws services.
+installing apache tomcat web server and jdk and nginx which is an web server
+creating ebs volumes and attaching to the instances, if required, on storage issues.
+and sonarqube and nexus etc...
+configuring these like changing ports like wise.
+git,maven and different required packages.
+and taking snapshot of ebs volumes
+and making golden ami's
+and creating s3 buckets for storing the objects and can be able to host static websites.
+it's having unlimited storage, durability
+then dealing with route53 which is used to create end points to access the service which is runnig on servers.
+and creating elastic load balancers for high availability of our application based on the health check of the target group which is having that particular instances,
+it will pass the traffic to the only healthy instances.
+heartbeat is a particular time which will check that the instace is healthy or not it will check.
+if it requires to access to internet we can go with internet faced, if its a private one we can go with internal option.
+ansible 
+and terraform
+NACL stateless set
+SECURITY GROUP stateful set
+IPTABLES
+iptables -A INPUT -p tcp -s localhost --dport 9090 -j ACCEPT
+iptables -A INPUT -p tcp --dport 9090 -j DROP
+ACM for security purposes of enhancing security for the application servers.
+Grafana(node exporter and prometheus)  
