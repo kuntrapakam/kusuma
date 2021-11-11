@@ -1,3 +1,43 @@
+Register a custom domain
+Create 2 S3 bucket
+One Bucket will be used to store the website content
+Another Bucket will be used for redirection
+Uploading website contents to the bucket
+Configure access policy for the buckets
+Test the domain endpoint
+configure DNS records
+Testing website
+Improving performance of the website using Cloudfront
+
+
+Using S3 we cannot host an website with HTTPS , So we need to use Cloudfront to serve the website hosted in S3 with HTTPS.
+Also we need to host the domain using Route 53 , Only then the domain works with the cloudfront.
+
+To setup the static website , We will be using the following AWS services.
+
+Route 53
+S3 Buckets
+Cloudfront
+AWS Certificate manager
+
+
+Route53 public hosted zone
+
+then create 2 s3 buckets
+
+with 
+destroyerohith.online which is used to redirect to the main bucket
+www.destroyerohith.online as a main bucket which is having the static content inside init
+
+main bucket 
+static web site hosting
+and make the bucket public access
+
+
+bucket policy
+
+
+
 {
        "Version": "2012-10-17",
        "Statement": [
@@ -6,7 +46,99 @@
              "Effect": "Allow",
              "Principal": "", 
              "Action": "s3:GetObject", 
-             "Resource": "arn:aws:s3:::www.fitdevops.in/*"
+             "Resource": "arn:aws:s3:::www.destroyerohith.online/*"
           }
       ]
 }
+
+
+
+open second bucket
+properties
+
+static web hosting
+
+redirect requests then choose https
+
+then deal with amazon acm
+
+for ssl
+
+then
+
+
+Now Its time to create distribution for fitdevops.in.
+
+Follow the same procedure as shown above and get the static website endpoint , Copy the endpoint without http.
+
+The origin domain name should be fitdevops.in.s3-website.ap-south-1.amazonaws.com (without www)
+
+It will generate the Origin ID.
+
+And for the Viewer protocol policy , Redirect HTTP to HTTPS
+
+This image has an empty alt attribute; its file name is Screenshot-from-2020-05-30-21-54-28.png
+And for Alternate Domain name (CNAMEs) , Enter the domain name i.e., fitdevops.in (without www).
+
+Select the certificate which you have generated and apply it here.
+
+Once the above settings are configured , Click Create distribution
+
+Now that we have hosted the static website using S3 , ACM and cloudfront.
+
+
+
+
+create cloudfront distributions
+
+We need to create 2 cloudfront distributions. One for each S3 buckets.
+And then choose Web as the delivery method for the contents.
+
+Under Origin Settings , provide the origin domain name of the main S3 bucket i.e www.fitdevops.in.
+
+To get the origin domain name of Main S3 bucket , Go to S3 console , Click the bucket and then select Properties
+
+and then click Static website hosting , You will find the endpoint there, Copy the endpoint without http.
+
+Now go to cloudfront and paste the origin domain name which you have copied.
+
+And origin ID will be generated automatically.
+
+And for the Viewer protocol policy , Redirect HTTP to HTTPS
+
+S3
+And for Alternate Domain name (CNAMEs) , Enter the domain name i.e., www.fitdevops.in.
+
+S3
+For SSL Certificate , We need to choose Custom SSL certificate ,
+
+If you havn’t created certificate in N.Virginia using AWS certificate Manager , Then you wont be able to apply SSL certificate for the distribution.
+
+S3
+Following the above Generating SSL Certificate procedure , create the certificate in the N.Virginia region.
+
+Once the certificate is generated and applied here, Click Create distribution.
+
+Now Its time to add the DNS records for the domain names with their respective cloudfront distributions.
+
+Login to Route53 console , Here we are going to create A records for the domain names pointing to cloudfront distributions.
+
+The following records should be created as follows.
+
+We should create A record for www.fitdevops.in pointing to the cloudfront distribution of www.fitdevops.in
+
+We should create A record for fitdevops.in pointing to the cloudfront distribution of fitdevops.in
+
+
+Create S3 bucket with the website contents and the bucket will be private which is by default
+Generate the SSL certificate using the same procedure
+Create cloudfront distribution and the Origin domain name should be the S3 bucket
+Restrict bucket access should be Yes
+Grant Read Permissions on Bucket : Yes, Update Bucket Policy
+Viewer Protocol Policy- Redirect HTTP to HTTPS
+Alternate domain names (CNAMES) – fitdevops.in www.fitdevops.in
+Apply the SSL certificate which was generated for the domain using ACM
+The Default Root object should be index.html
+Once the cloudfront distribution is successfully deployed.
+Add the DNS A records pointing to cloudfront distribution alias to fitdevops.in and
+Add CNAME record from www.fitdevops.in to fitdevops.in

@@ -1,6 +1,6 @@
-hi, good evening, my name is rohith and iam from tirupathi,i have been working as a build and release engineer and on several(multiple) aws services,
+hi, good morning, my name is rohith and iam from tirupathi,i have been working as a build and release engineer and on several(multiple) aws services,
 coming to my roles and responsibilities my first most priority is to check whether the ci-cd pipelines are intact or not, if not have to deal with the issues 
-by collaborating with the other team members,(compatibility issues, unnecessary updates of plugins, mis configurations)
+by collaborating with the team members,(compatibility issues, unnecessary updates of plugins, mis configurations)
 and have to work on the task which is assigned to that particular day.
 for the continous integration and continuous deployemnet we are using jenkins as a cicd tool,
 and for the source code management we are using github, and git as a tool
@@ -41,7 +41,7 @@ docker network connect containername networkname
 one container can have multiple ips yes possible.
 docker inspect containername
 which will give you the complete details of the docker container.
-FROM maven3.6.3-openjdk AS maven
+FROM maven:3.6.3-openjdk AS maven
 COPY
 ADD
 RUN
