@@ -1,0 +1,5 @@
+jenkins
+certificate error
+solved with this certificate updation
+
+sudo apt install ca-certificates

@@ -1,0 +1,14 @@
+#!/bin/bash
+yum update -y
+yum install unzip -y && yum install wget -y
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+sudo dnf config-manager --set-enabled PowerTools
+yum update -y
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+echo $JAVA_HOME
+wget https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz
+tar -xvf apache-maven-3.8.3-bin.tar.gz
+mv apache-maven-3.8.3 maven
+chmod -R 777 maven
+rm -rf apache-maven-3.8.3-bin.tar.gz
+export M2_HOME=/root/maven/bin/

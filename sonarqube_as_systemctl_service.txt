@@ -1,0 +1,21 @@
+/usr/lib/jvm/java-1.8.0-openjdk/bin
+
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=sonar
+Group=sonar
+PermissionsStartOnly=true
+ExecStart=/bin/nohup /usr/lib/jvm/java-1.8.0-openjdk/bin/java -Xms32m -Xmx32m -Djava.net.preferIPv4Stack=true -jar /home/sonar/sonarqube/lib/sonar-application-7.8.jar
+StandardOutput=syslog
+LimitNOFILE=131072
+LimitNPROC=8192
+TimeoutStartSec=5
+Restart=always
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
