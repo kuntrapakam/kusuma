@@ -1,0 +1,11 @@
+    1  clear
+    2  sudo apt update -y
+    3  sudo apt update
+    4  wget -qO - https://api.bintray.com/orgs/jfrog/keys/gpg/public.key | sudo apt-key add -
+    5  echo "deb https://jfrog.bintray.com/artifactory-debs focal main" | sudo tee /etc/apt/sources.list.d/jfrog.list
+    6  sudo apt update
+    7  sudo apt install jfrog-artifactory-oss
+    8  sudo systemctl start artifactory.service
+    9  sudo systemctl enable artifactory.service
+   10  systemctl status artifactory.service
+   11  history

@@ -1,0 +1,51 @@
+#!/bin/bash
+yum update -y
+yum install wget -y && yum install unzip -y
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+sudo dnf config-manager --set-enabled PowerTools
+yum update -y
+yum install java-devel -y
+yum install maven -y
+yum install docker -y
+yum install ansible -y
+yum install git -y
+useradd sonarqube
+# set password for ansibleadmin
+echo "sonarqube" | passwd --stdin sonarqube
+# set ansibleadmin as sudoers
+echo 'sonarqube     ALL=(ALL)      NOPASSWD: ALL' | sudo tee -a /etc/sudoers
+# set ec2-user as sudoers
+echo 'ec2-user     ALL=(ALL)      NOPASSWD: ALL' | sudo tee -a /etc/sudoers 
+# enable ssh passwordless authentication
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+service sshd restart
+su - sonarqube
+sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.8.zip
+sudo unzip sonarqube-7.8.zip
+sudo rm -rf sonarqube-7.8.zip
+sudo chmod -R 777 sonarqube-7.8/
+sudo mv sonarqube-7.8/ sonarqube
+sudo cd sonarqube/bin/linux-x86-64
+
+sudo echo '
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+sudo vi /etc/systemd/system/sonarqube.service | sudo tee -a
+[Service]
+Type=simple
+User=sonarqube
+Group=sonarqube
+PermissionsStartOnly=true
+ExecStart=/bin/nohup java -Xms32m -Xmx32m -Djava.net.preferIPv4Stack=true -jar /home/sonarqube/sonarqube/lib/sonar-application-7.8.jar
+StandardOutput=syslog
+LimitNOFILE=65536
+LimitNPROC=8192
+TimeoutStartSec=5
+Restart=always
+
+[Install]
+WantedBy=multi-user.target' | sudo tee -a /etc/systemd/system/sonarqube.service
+
+sudo systemctl start sonarqube
+sudo systemctl enable sonarqube

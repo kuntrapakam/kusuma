@@ -1,3 +1,6 @@
+scp -i hindikumaru.pem hindikumaru.pem ec2-user@13.233.5.8:home
+pip3 install requests
+pip3 install --upgrade requests
 curl -O https://bootstrap.pypa.io/get-pip.py\
 python3 get-pip.py
 
@@ -34,3 +37,7 @@ ansible-inventory -i aws_ec2.yml --list
 craete ec2.pem
 
 ansible localhost -i inventory -m ping --private-key=ec2.pem
+
+
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+sudo dnf config-manager --set-enabled codeready-builder-for-rhel-8-rhui-rpms
